@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light Animation</title>
+    <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .red { background-color: red; }
+        .yellow { background-color: yellow; }
+        .green { background-color: green; }
+        .light {
+            background-color: black;
+        }
+        .number {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            
+        }
+        .number-display {
+            font-size: 240px;
+            font-weight: bold;
+            margin-top: 50px;
+            color: white;
+            display: inline-block;
+            border: 3px solid white;
+            padding: 0px 30px;
+            border-radius: 20%;
+        }
+
+        .number-display1,.number-display3{
+            margin-right: 50px;
+        }
+
+        .colon {
+            font-size: 240px;
+            font-weight: bold;
+            margin: 0 5px;
+            color: white;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="inner-container">
+        <div class="Col">
+            <div class="tf1">
+                <div class="traffic-signal ">
+                    <div class="red red1 light"  ></div>
+                    <div class="yellow yellow1 light"></div>
+                    <div class="green green1 light"></div>
+                </div>
+            </div>
+            <div class="tf2">
+                <div class="traffic-signal">
+                    <div class="red red1 light"  ></div>
+                    <div class="yellow yellow1 light"></div>
+                    <div class="green green1 light"></div>
+                </div>
+            </div>
+        </div>
+        <div class="Row">
+            <div class="tf3">
+                <div class="traffic-signal">
+                    <div class="red red2 light"></div>
+                    <div class="yellow yellow2 light"></div>
+                    <div class="green green2 light"></div>
+                    
+                </div>
+            </div>
+            <div class="tf4">
+                <div class="traffic-signal">
+                    <div class="red red2 light"></div>
+                    <div class="yellow yellow2 light"></div>
+                    <div class="green green2 light"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="inner-button">
+        <button type="button" class="btn btn-primary" id="button-1">Button 1</button>
+        <button type="button" class="btn btn-primary" id="button-2">Button 2</button>
+        <button type="button" class="btn btn-primary" id="button-3">Button 3</button>
+        <button type="button" class="btn btn-primary" id="button-4">Button 4</button>
+    </div>
+    <div class="number">
+        <div class="number-display number-display1"></div>
+        <div class="number-display number-display2"></div>
+        <div class="colon">:</div>
+        <div class="number-display number-display3"></div>
+        <div class="number-display number-display4"></div>
+    </div>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>

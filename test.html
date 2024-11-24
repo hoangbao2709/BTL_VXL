@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quad 7 Segment Display in HTML/JavaScript</title>
+<style type="text/css">
+div.anode {
+	border: solid 2px red;
+	background: red;
+	color: white;
+	display: inline;
+	margin: 2px;
+	border-radius: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+  cursor:pointer;
+}
+div.cathode {
+	border: solid 2px black;
+	display: inline;
+	margin: 2px;
+	border-radius: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+  cursor:pointer;
+}
+div.simulator {
+	width: 280px;
+	text-align: center;
+}
+div.button {
+	border-radius: 12px; /*Makes it a circle*/
+	border: solid 2px black;
+	width: 20px;
+	height: 20px;
+  display: inline-block;
+	margin:2px;
+  cursor:pointer;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+div.display {
+
+	height: 78px;
+  background: black;
+}
+div.digit {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
+	display: inline-block;
+	height: 70px;
+	width: 52px;
+	position: relative;
+  transform: skew(170deg);
+}
+div.segA {
+	width: 16px;
+	border-top: 10px solid #333;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+	position: absolute;
+	left: 2px;
+}
+div.segB {
+	height: 16px;
+	border-top: 10px solid transparent;
+	border-right: 10px solid #333;
+	border-bottom: 5px solid transparent;
+	position: absolute;
+	top: 2px;
+	left: 30px
+}
+div.segC {
+	height: 16px;
+	border-top: 5px solid transparent;
+	border-right: 10px solid #333;
+	border-bottom: 10px solid transparent;
+	position: absolute;
+	top: 37px;
+	left: 30px
+}
+div.segD {
+	width: 16px;
+	border-bottom: 10px solid #333;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+	position: absolute;
+	left: 2px;
+	bottom: 0px;
+}
+div.segE {
+	height: 16px;
+	border-top: 5px solid transparent;
+	border-left: 10px solid #333;
+	border-bottom: 10px solid transparent;
+	position: absolute;
+	top: 37px;
+}
+div.segF {
+	height: 16px;
+	border-top: 10px solid transparent;
+	border-left: 10px solid #333;
+	border-bottom: 5px solid transparent;
+	position: absolute;
+	top: 2px;
+}
+div.segGTop {
+	width: 16px;
+	border-bottom: 5px solid #333;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+	position: absolute;
+	left: 2px;
+	top: 30px;
+}
+div.segGBottom {
+	width: 16px;
+	border-top: 5px solid #333;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+	position: absolute;
+	top: 35px;
+	left: 2px;
+}
+div.segH {
+	position: absolute;
+	top: 60px;
+	left: 42px;
+	border-radius: 5px; /*Makes it a circle*/
+	width: 10px;
+	height: 10px;
+  background: #333;
+}
+</style>
+<script type="text/javascript">
+//These are the pins that are common cathode/anode and control which digit is illuminated and in which order
+commonPins = [12, 9, 8, 6];
+//These are the pins that control which segment is illumintaed (or whether the decimal point is illuminted)
+segmentPins = [11, 7, 4, 2, 1, 10, 5, 3];
+
+//These are the colours of the segments
+dark = "#333";
+light = "red";
+
+//Set commonAnode to true as there must be a default
+commonAnode = true;
+//Set all pins to false as none are turned on
+pinStates = [false, false, false, false, false, false, false, false, false, false, false, false];
+
+//Called when a pin is turned on
+function pinChange(pinNumber) {
+  pinStates[pinNumber] = !pinStates[pinNumber];
+  updateDisplay();
+}
+
+function updateDisplay() {
+  //Set commonAnode or commonCathode description
+  document.getElementById("anode").style.color = commonAnode ? "white" : "red";
+  document.getElementById("anode").style.background = commonAnode ? "red" : "white";
+  document.getElementById("cathode").style.color = commonAnode ? "" : "white";
+  document.getElementById("cathode").style.background = commonAnode ? "" : "black";
+
+  //Update pin buttons to indicate whether they are on or not
+  for (i = 0; i < 12; i++) {
+    if (pinStates[i]) {
+      numberColour = "white";
+      if (commonPins.indexOf(i+1) != -1) {
+        pinColour = commonAnode ? "red" : "black";
+      } else {
+        pinColour = commonAnode ? "black" : "red";
+      }
+    } else {
+      numberColour = "";
+      pinColour = "";
+    }
+    document.getElementById("button" + i).style.color = numberColour;
+    document.getElementById("button" + i).style.background = pinColour;
+  }
+  
+  //Update 7 Segment display with correct illuminations
+  for (x = 0; x < 4; x++) {
+    for(y = 0; y < 8; y++) {
+      if (pinStates[commonPins[x] - 1] && pinStates[segmentPins[y] -1]) {
+        setSegmentState("d" + x + "s" + y, true);
+      } else {
+        setSegmentState("d" + x + "s" + y, false);
+      }
+    }
+  }
+}
+
+//Set right border/backround section of right div to illuminate display
+function setSegmentState(segment, lit) {
+  colour = lit ? light : dark;
+  piece = segment.substr(3, 1);
+  switch(piece) {
+    case "0":
+      document.getElementById(segment).style.borderTopColor = colour;
+      break;
+    case "1":
+    case "2":
+      document.getElementById(segment).style.borderRightColor = colour;
+      break;
+    case "3":
+      document.getElementById(segment).style.borderBottomColor = colour;
+      break;
+    case "4":
+    case "5":
+      document.getElementById(segment).style.borderLeftColor = colour;
+      break;
+    case "6":
+      //This segment (the central "G" one) is made of two div's borders
+      document.getElementById(segment + "Bottom").style.borderTopColor = colour;
+      document.getElementById(segment + "Top").style.borderBottomColor = colour;
+      break;
+    case "7":
+      document.getElementById(segment).style.background = colour;
+      break;
+  }
+}
+
+//Called when common type is changed
+function changeType(isAnode) {
+  commonAnode = isAnode;
+  updateDisplay();
+}
+</script>
+</head>
+<body onLoad="updateDisplay()">
+<div class="simulator">
+  <div class="anode" id="anode" onClick="changeType(true);">Common Anode</div><div class="cathode" id="cathode" onClick="changeType(false);">Common Cathode</div>
+  <br>
+  <br>
+  <div class="button" id="button11" onClick="pinChange(11);">12</div>
+  <div class="button" id="button10" onClick="pinChange(10);">11</div>
+  <div class="button" id="button9" onClick="pinChange(9);">10</div>
+  <div class="button" id="button8" onClick="pinChange(8);">9</div>
+  <div class="button" id="button7" onClick="pinChange(7);">8</div>
+  <div class="button" id="button6" onClick="pinChange(6);">7</div>
+  <div class="display">
+    <div class="digit">
+      <div class="segA" ID="d0s0"></div>
+      <div class="segB" ID="d0s1"></div>
+      <div class="segC" ID="d0s2"></div>
+      <div class="segD" ID="d0s3"></div>
+      <div class="segE" ID="d0s4"></div>
+      <div class="segF" ID="d0s5"></div>
+      <div class="segGTop" ID="d0s6Top"></div>
+      <div class="segGBottom" ID="d0s6Bottom"></div>
+      <div class="segH" ID="d0s7"></div>
+    </div><div class="digit">
+      <div class="segA" ID="d1s0"></div>
+      <div class="segB" ID="d1s1"></div>
+      <div class="segC" ID="d1s2"></div>
+      <div class="segD" ID="d1s3"></div>
+      <div class="segE" ID="d1s4"></div>
+      <div class="segF" ID="d1s5"></div>
+      <div class="segGTop" ID="d1s6Top"></div>
+      <div class="segGBottom" ID="d1s6Bottom"></div>
+      <div class="segH" ID="d1s7"></div>
+    </div><div class="digit">
+      <div class="segA" ID="d2s0"></div>
+      <div class="segB" ID="d2s1"></div>
+      <div class="segC" ID="d2s2"></div>
+      <div class="segD" ID="d2s3"></div>
+      <div class="segE" ID="d2s4"></div>
+      <div class="segF" ID="d2s5"></div>
+      <div class="segGTop" ID="d2s6Top"></div>
+      <div class="segGBottom" ID="d2s6Bottom"></div>
+      <div class="segH" ID="d2s7"></div>
+    </div><div class="digit">
+      <div class="segA" ID="d3s0"></div>
+      <div class="segB" ID="d3s1"></div>
+      <div class="segC" ID="d3s2"></div>
+      <div class="segD" ID="d3s3"></div>
+      <div class="segE" ID="d3s4"></div>
+      <div class="segF" ID="d3s5"></div>
+      <div class="segGTop" ID="d3s6Top"></div>
+      <div class="segGBottom" ID="d3s6Bottom"></div>
+      <div class="segH" ID="d3s7"></div>
+    </div>
+  </div>
+  <div class="button" id="button0" onClick="pinChange(0);">1</div>
+  <div class="button" id="button1" onClick="pinChange(1);">2</div>
+  <div class="button" id="button2" onClick="pinChange(2);">3</div>
+  <div class="button" id="button3" onClick="pinChange(3);">4</div>
+  <div class="button" id="button4" onClick="pinChange(4);">5</div>
+  <div class="button" id="button5" onClick="pinChange(5);">6</div>
+</div>
+</body>
+</html>

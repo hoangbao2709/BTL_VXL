@@ -1,0 +1,4 @@
+fsm_automatic.c:12:6:print	8	static
+fsm_automatic.c:19:6:Reset	4	static
+fsm_automatic.c:33:6:case1	8	static
+fsm_automatic.c:127:6:case3	8	static
