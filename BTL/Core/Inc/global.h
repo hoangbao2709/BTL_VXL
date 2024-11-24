@@ -8,6 +8,8 @@
 #ifndef INC_GLOBAL_H_
 #define INC_GLOBAL_H_
 
+#include "main.h"
+
 extern int bool, i;
 extern int counter, counter2;
 extern int i_1, j_1, t_1;
@@ -18,5 +20,6 @@ extern int prev_max_Red, prev_max_Yellow, prev_max_Green;
 extern int mode, en0, en1, en2, en3;
 extern char buffer1[20];
 extern char buffer2[20];
+
 
 #endif /* INC_GLOBAL_H_ */

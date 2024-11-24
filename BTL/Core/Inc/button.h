@@ -17,6 +17,8 @@
 
 extern int button_flag[ARRAY_SIZE];
 extern int PRESSED_STATE_0;
+UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 void subKeyProcess();
 void getKeyInput();

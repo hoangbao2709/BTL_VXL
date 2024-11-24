@@ -16,3 +16,4 @@ int max_Red = 5, max_Yellow = 2, max_Green = 3, turn = 0;
 int prev_max_Red = 5, prev_max_Yellow = 2, prev_max_Green = 3;
 char buffer1[20];
 char buffer2[20];
+

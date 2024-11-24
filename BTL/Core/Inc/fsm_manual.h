@@ -17,8 +17,6 @@
 #include "i2c-lcd.h"
 
 void fsm_manual();
-int case2(int ,int ,
-		GPIO_TypeDef* , uint16_t , GPIO_TypeDef* , uint16_t ,
-		GPIO_TypeDef* , uint16_t , GPIO_TypeDef* , uint16_t );
+int case2(int ,int);
 
 #endif /* INC_FSM_MANUAL_H_ */

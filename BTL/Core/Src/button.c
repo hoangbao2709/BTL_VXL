@@ -6,6 +6,7 @@
  */
 #include "button.h"
 
+
 #define ARRAY_SIZE 4
 
 int button_flag[ARRAY_SIZE] = {0 ,0 ,0, 0};
@@ -22,6 +23,9 @@ void subKeyProcess(int i){
 	for(int j = 0; j < ARRAY_SIZE; j++){
 		button_flag[j] = 0;
 	}
+	char buffer[20];
+	sprintf(buffer, "%d", i + 1);
+	HAL_UART_Transmit(&huart2, buffer, sizeof(buffer), 1000);
 	button_flag[i] = 1;
 }
 

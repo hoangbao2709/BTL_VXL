@@ -11,7 +11,7 @@
 #include "software_timer.h"
 #include "led_traffic.h"
 
-
+void Reset();
 void print();
 void case1();
 

@@ -8,39 +8,32 @@
     <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./style.css">
     <style>
+        body { display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 0; background-color: black; padding-bottom: 2000px; }
+        .inner-container { margin-top: 100px; position: relative; width: 1200px; height: 1200px; display: flex; align-items: center; justify-content: center; background-image: url("image/traffic.png"); background-size: cover; background-position: center; }
+        .Col { position: absolute; transform: rotate(90deg); align-items: center; text-align: center; display: flex; }
+        .tf1 { margin-right: 350px; }
+        .tf2 { margin-left: 350px; transform: rotate(180deg); }
+        .tf3 { margin-right: 400px; }
+        .tf4 { transform: rotate(180deg); margin-left: 350px; }
+        .Row { position: absolute; display: flex; }
+        .traffic-signal { width: 100px; height: 300px; background-color: #333; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+        .light { width: 60px; height: 60px; border-radius: 50%; margin: 10px; transition: background-color 0.9s; }
+        @keyframes blinkRed { 0%, 49% { background-color: red; } 50%, 100% { background-color: black; } }
+        .red { background-color: red; }
+        .yellow { background-color: yellow; animation: blinkYellow 9s infinite 3s; }
+        .green { background-color: green; animation: blinkGreen 9s infinite 6s; }
+        .button-container { margin-top: 20px; display: flex; justify-content: center; }
+        .btn { background-color: #007bff; border: none; color: white; padding: 10px 20px; margin: 0 5px; border-radius: 5px; transition: background-color 0.3s, transform 0.3s; }
+        .btn:hover { background-color: #0056b3; transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); background-color: #003d7a; }
         .red { background-color: red; }
         .yellow { background-color: yellow; }
         .green { background-color: green; }
-        .light {
-            background-color: black;
-        }
-        .number {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-            
-        }
-        .number-display {
-            font-size: 240px;
-            font-weight: bold;
-            margin-top: 50px;
-            color: white;
-            display: inline-block;
-            border: 3px solid white;
-            padding: 0px 30px;
-            border-radius: 20%;
-        }
-
-        .number-display1,.number-display3{
-            margin-right: 50px;
-        }
-
-        .colon {
-            font-size: 240px;
-            font-weight: bold;
-            margin: 0 5px;
-            color: white;
-            }
+        .light {background-color: black;}
+        .number {display: flex;justify-content: center;margin-top: 10px;}
+        .number-display {font-size: 240px;font-weight: bold;margin-top: 50px;color: white;display: inline-block;border: 3px solid white;padding: 0px 30px;border-radius: 20%;}
+        .number-display1,.number-display3{margin-right: 50px;}
+        .colon {font-size: 240px;font-weight: bold;margin: 0 5px;color: white;}
     </style>
 </head>
 
@@ -97,7 +90,313 @@
         <div class="number-display number-display4"></div>
     </div>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="/script.js"></script>
+    <script>
+        const button1 = document.getElementById('button-1');
+        const button2 = document.getElementById('button-2');
+        const button3 = document.getElementById('button-3');
+        const button4 = document.getElementById('button-4');
+        
+        const redLights = document.querySelectorAll('.red');
+        const yellowLights = document.querySelectorAll('.yellow');
+        const greenLights = document.querySelectorAll('.green');
+        
+        const redLights1 = document.querySelectorAll('.red1');
+        const yellowLights1 = document.querySelectorAll('.yellow1');
+        const greenLights1 = document.querySelectorAll('.green1');
+        
+        const redLights2 = document.querySelectorAll('.red2');
+        const yellowLights2 = document.querySelectorAll('.yellow2');
+        const greenLights2 = document.querySelectorAll('.green2');
+        
+        const numberDisplays1 = document.querySelectorAll('.number-display1');
+        const numberDisplays2 = document.querySelectorAll('.number-display2');
+        const numberDisplays3 = document.querySelectorAll('.number-display3');
+        const numberDisplays4 = document.querySelectorAll('.number-display4');
+        
+        let redBlinkingInterval;
+        let yellowBlinkingInterval;
+        let greenBlinkingInterval;
+        let currentState = 0;
+        let maxRed = 5;
+        let maxYellow = 2;
+        let maxGreen = 3;
+        let temp;
+        let i_1 = maxRed, j_1 = maxYellow, t_1 = maxGreen;
+        let i_2 = maxRed, j_2 = maxYellow, t_2 = maxGreen;
+        let counter = 0;
+        let counter2 = 1;
+        let intervalId;
+        //let button1,button2,button3,button4;
+        
+        // Cập nhật hiển thị mỗi giây
+        function startUpdating() {
+            intervalId = setInterval(getCurrentTimeInMinutesAndSeconds, 1000);
+        }
+        
+        function stopUpdating() {
+            clearInterval(intervalId);
+        }
+        
+        function LED_RED_1() {
+            yellowLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            redLights1.forEach(light => {
+                light.style.backgroundColor = 'red';
+            });
+        }
+        
+        function LED_YELLOW_1() {
+            redLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            yellowLights1.forEach(light => {
+                light.style.backgroundColor = 'yellow';
+            });
+        }
+        
+        function LED_GREEN_1() {
+            redLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            yellowLights1.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights1.forEach(light => {
+                light.style.backgroundColor = 'green';
+            });
+        }
+        
+        function LED_RED_2() {
+            yellowLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            redLights2.forEach(light => {
+                light.style.backgroundColor = 'red';
+            });
+        }
+        
+        function LED_YELLOW_2() {
+            redLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            yellowLights2.forEach(light => {
+                light.style.backgroundColor = 'yellow';
+            });
+        }
+        
+        function LED_GREEN_2() {
+            redLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            yellowLights2.forEach(light => {
+                light.style.backgroundColor = 'black';
+            });
+            greenLights2.forEach(light => {
+                light.style.backgroundColor = 'green';
+            });
+        }
+        
+        function getCurrentTimeInMinutesAndSeconds() {
+            // Cập nhật trạng thái và hiển thị cho bộ đèn 1
+            switch (counter) {
+                case 0:
+                    LED_RED_1();
+                    display1(i_1);
+                    i_1--;
+                    if (i_1 == 0) {
+                        i_1 = maxRed;
+                        counter++;
+                    }
+                    break;
+                case 1:
+                    LED_GREEN_1();
+                    display1(t_1);
+                    t_1--;
+                    if (t_1 == 0) {
+                        t_1 = maxGreen;
+                        counter++;
+                    }
+                    break;
+                case 2:
+                    LED_YELLOW_1();
+                    display1(j_1);
+                    j_1--;
+                    if (j_1 == 0) {
+                        j_1 = maxYellow;
+                        counter = 0;
+                    }
+                    break;
+            }
+        
+            // Cập nhật trạng thái và hiển thị cho bộ đèn 2
+            switch (counter2) {
+                case 0:
+                    LED_RED_2();
+                    display2(i_2);
+                    i_2--;
+                    if (i_2 == 0) {
+                        i_2 = maxRed;
+                        counter2++;
+                    }
+                    break;
+                case 1:
+                    LED_GREEN_2();
+                    display2(t_2);
+                    t_2--;
+                    if (t_2 == 0) {
+                        t_2 = maxGreen;
+                        counter2++;
+                    }
+                    break;
+                case 2:
+                    LED_YELLOW_2();
+                    display2(j_2);
+                    j_2--;
+                    if (j_2 == 0) {
+                        j_2 = maxYellow;
+                        counter2 = 0;
+                    }
+                    break;
+            }
+        }
+        
+        function display1(a) {
+            document.querySelectorAll('.number-display1').forEach(display => display.textContent = Math.floor(a / 10));
+            document.querySelectorAll('.number-display2').forEach(display => display.textContent = a % 10);
+        }
+        
+        function display2(a) {
+            numberDisplays3.forEach(display => {
+                display.textContent = Math.floor(a / 10); 
+            });
+        
+            numberDisplays4.forEach(display => {
+                display.textContent = a % 10;
+            });
+        }
+        
+        
+        button1.addEventListener('click', () => {
+            clearInterval(redBlinkingInterval);
+            clearInterval(yellowBlinkingInterval);
+            clearInterval(greenBlinkingInterval);
+
+            currentState = currentState + 1;
+            if(currentState == 4){
+                currentState = 0;
+            }
+            
+        
+            switch (currentState) {
+                case 0:
+                    if(maxRed != maxYellow + maxGreen){
+                        maxYellow = maxRed - maxGreen;
+                    }
+                    i_1 = maxRed, j_1 = maxYellow, t_1 = maxGreen;
+                    i_2 = maxRed, j_2 = maxYellow, t_2 = maxGreen;
+                    startUpdating();
+                    break;
+                case 1:
+                    stopUpdating();
+                    display1(currentState);
+                    display2(maxRed);
+                    yellowLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    greenLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    redLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    redBlinkingInterval = setInterval(() => {
+                        redLights.forEach(redLight => {
+                            redLight.style.backgroundColor = (redLight.style.backgroundColor === 'red') ? 'black' : 'red';
+                        });
+                    }, 1000);
+                    temp = maxRed;
+                    break;
+        
+                case 2:
+                    display1(currentState);
+                    display2(maxYellow);
+                    yellowLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    greenLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    redLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    yellowBlinkingInterval = setInterval(() => {
+                        yellowLights.forEach(yellowLight => {
+                            yellowLight.style.backgroundColor = (yellowLight.style.backgroundColor === 'yellow') ? 'black' : 'yellow';
+                        });
+                    }, 1000);
+                    temp = maxYellow;
+                    break;
+                case 3:
+                    display1(currentState);
+                    display2(maxGreen);
+                    yellowLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    greenLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    redLights.forEach(light => {
+                        light.style.backgroundColor = 'black';
+                    });
+                    greenBlinkingInterval = setInterval(() => {
+                        greenLights.forEach(greenLight => {
+                            greenLight.style.backgroundColor = (greenLight.style.backgroundColor === 'green') ? 'black' : 'green';
+                        });
+                    }, 1000);
+                    temp = maxGreen;
+                    break;
+            }
+        });
+        
+        startUpdating();
+
+        button2.addEventListener('click', () => {
+            temp++;
+            display2(temp);
+        });
+        button3.addEventListener('click', () => {
+            switch (currentState) {
+            case 1:
+                maxRed = temp;
+                break;
+            case 2:
+                maxYellow = temp;
+                break;
+            case 3:
+                maxGreen = temp;
+                break;
+            }
+        });
+
+        button4.addEventListener('click', () => {
+            temp--;
+            display2(temp);
+        });
+        
+        ;</script>
 </body>
 
 </html>

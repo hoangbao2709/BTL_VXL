@@ -13,6 +13,7 @@ C_SRCS += \
 ../Core/Src/i2c-lcd.c \
 ../Core/Src/led_traffic.c \
 ../Core/Src/main.c \
+../Core/Src/scheduler.c \
 ../Core/Src/software_timer.c \
 ../Core/Src/stm32f1xx_hal_msp.c \
 ../Core/Src/stm32f1xx_it.c \
@@ -29,6 +30,7 @@ OBJS += \
 ./Core/Src/i2c-lcd.o \
 ./Core/Src/led_traffic.o \
 ./Core/Src/main.o \
+./Core/Src/scheduler.o \
 ./Core/Src/software_timer.o \
 ./Core/Src/stm32f1xx_hal_msp.o \
 ./Core/Src/stm32f1xx_it.o \
@@ -45,6 +47,7 @@ C_DEPS += \
 ./Core/Src/i2c-lcd.d \
 ./Core/Src/led_traffic.d \
 ./Core/Src/main.d \
+./Core/Src/scheduler.d \
 ./Core/Src/software_timer.d \
 ./Core/Src/stm32f1xx_hal_msp.d \
 ./Core/Src/stm32f1xx_it.d \

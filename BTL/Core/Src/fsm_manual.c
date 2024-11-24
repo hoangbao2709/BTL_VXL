@@ -11,10 +11,7 @@
 
 int temp, test_1 = 0;
 
-int case2(int mode,int a,
-		GPIO_TypeDef* D0_PORT, uint16_t D0_PIN, GPIO_TypeDef* D1_PORT, uint16_t D1_PIN,
-		GPIO_TypeDef* D2_PORT, uint16_t D2_PIN, GPIO_TypeDef* D3_PORT, uint16_t D3_PIN){
-	setup_Led7SEG();
+int case2(int mode,int a){
 	if(en0 == 1)
 		switch(mode){
 		case 1:
@@ -105,6 +102,7 @@ void fsm_manual(){
 		mode++;
 		test_1 = 1;
 		if(mode == 4 || mode == 6) {
+			SCH_Delete_Task(2);
 			lcd_clear_display();
 			if(prev_max_Red == prev_max_Green + prev_max_Yellow){
 				max_Red = prev_max_Red;
@@ -119,10 +117,9 @@ void fsm_manual(){
 			Reset();
 			mode = 0;
 		}
-	}
-	if(timer_flag[3] == 1){
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-		setTimer(3, 1000);
+		else if(mode == 1){
+			SCH_Add_Task(setup_Led7SEG, 0, 50);
+		}
 	}
 	if(mode != 0 && mode != 6){
 		lcd_goto_XY(1, 0);
@@ -147,30 +144,21 @@ void fsm_manual(){
 			temp = max_Red;
 			test_1 = 0;
 		}
-		temp = case2(mode, temp,
-			a_GPIO_Port, a_Pin,b_GPIO_Port, b_Pin,
-			c_GPIO_Port, c_Pin,d_GPIO_Port, d_Pin
-		);
+		temp = case2(mode, temp);
 		break;
 	case 2:
 		if(test_1 == 1){
 			temp = max_Yellow;
 			test_1 = 0;
 		}
-		temp = case2(mode, temp,
-			a_GPIO_Port, a_Pin,b_GPIO_Port, b_Pin,
-			c_GPIO_Port, c_Pin,d_GPIO_Port, d_Pin
-		);
+		temp = case2(mode, temp);
 		break;
 	case 3:
 		if(test_1 == 1){
 			temp = max_Green;
 			test_1 = 0;
 		}
-		temp = case2(mode, temp,
-			a_GPIO_Port, a_Pin,b_GPIO_Port, b_Pin,
-			c_GPIO_Port, c_Pin,d_GPIO_Port, d_Pin
-		);
+		temp = case2(mode, temp);
 		break;
 	}
 	if(PRESSED_STATE_0 == 1){
